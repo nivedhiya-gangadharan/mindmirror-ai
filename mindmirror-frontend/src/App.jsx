@@ -10,39 +10,9 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Journal from "./pages/Journal";
+import Analytics from "./pages/Analytics";
 import "./App.css";
-
-// Placeholder for Journal page (to be implemented in Task 1.3)
-function JournalPlaceholder() {
-  const { user } = useAuth();
-  return (
-    <div className="page-container">
-      <div className="card">
-        <h2>📖 Journal & Reflections</h2>
-        <p>Welcome back, <strong>{user?.username}</strong>!</p>
-        <p className="placeholder-text">
-          Journal entry creation and AI sentiment analysis interface will be built in Task 1.3.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// Placeholder for Mood Analytics & Dashboard page (to be implemented in Task 2.1)
-function AnalyticsPlaceholder() {
-  const { user } = useAuth();
-  return (
-    <div className="page-container">
-      <div className="card">
-        <h2>📊 Mood Analytics Dashboard</h2>
-        <p>Insights for <strong>{user?.username}</strong></p>
-        <p className="placeholder-text">
-          Mood analytics summary, trend charts, and sentiment breakdown will be built in Task 2.1.
-        </p>
-      </div>
-    </div>
-  );
-}
 
 // Public Route Guard (redirects already authenticated users away from login/register)
 function PublicRoute({ children }) {
@@ -97,7 +67,7 @@ function App() {
                 path="/journal"
                 element={
                   <ProtectedRoute>
-                    <JournalPlaceholder />
+                    <Journal />
                   </ProtectedRoute>
                 }
               />
@@ -106,7 +76,7 @@ function App() {
                 path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <AnalyticsPlaceholder />
+                    <Analytics />
                   </ProtectedRoute>
                 }
               />
@@ -115,7 +85,7 @@ function App() {
                 path="/analytics"
                 element={
                   <ProtectedRoute>
-                    <AnalyticsPlaceholder />
+                    <Analytics />
                   </ProtectedRoute>
                 }
               />
