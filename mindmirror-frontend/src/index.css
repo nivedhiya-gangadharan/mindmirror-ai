@@ -1,111 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@400;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&display=swap');
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* ============================================================
+     MINDMIRROR AI - UNIFIED DESIGN SYSTEM (Prompt #6)
+     ============================================================ */
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Primary Color: Brand Pink (#E8368F) everywhere */
+  --accent: #E8368F;
+  --accent-hover: #D0247B;
+  --accent-bg: #FBE4ED;
+  --accent-text: #B81D6C;
+  --accent-border: rgba(232, 54, 143, 0.25);
+  --brand-pink: #E8368F;
+  --brand-pink-hover: #D0247B;
+  --brand-pink-bg: #FBE4ED;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Headings, Logo & Emphasis Text: Deep Ink (#332755) everywhere */
+  --text-h: #332755;
+  --text: #4D5265;
+  --text-muted: #6E748B;
+  --text-secondary: #6E748B;
+  --deep-ink: #332755;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Secondary Accent & Avatars: Legacy Purple (#AA3BFF) */
+  --legacy-purple: #AA3BFF;
+  --legacy-purple-hover: #9625EB;
+  --legacy-purple-bg: #F3EAFC;
+  --legacy-purple-text: #6C1EB3;
+  --legacy-purple-border: rgba(170, 59, 255, 0.25);
+
+  /* Functional Category Colors */
+  /* Calm Blue: Anxiety & Stress */
+  --cat-anxiety: #3B82C4;
+  --cat-anxiety-bg: #EAF3FA;
+  --cat-anxiety-text: #1E568B;
+  --cat-anxiety-border: rgba(59, 130, 196, 0.25);
+
+  /* Clay Red: Trauma Recovery */
+  --cat-trauma: #B2584C;
+  --cat-trauma-bg: #F7EAE8;
+  --cat-trauma-text: #8E3B30;
+  --cat-trauma-border: rgba(178, 88, 76, 0.25);
+
+  /* Legacy Purple: Depression */
+  --cat-depression: #AA3BFF;
+  --cat-depression-bg: #F3EAFC;
+  --cat-depression-text: #6C1EB3;
+  --cat-depression-border: rgba(170, 59, 255, 0.25);
+
+  /* Warm Rose: Relationships */
+  --cat-relationships: #BD5B78;
+  --cat-relationships-bg: #FDF0F4;
+  --cat-relationships-text: #8C2E4A;
+  --cat-relationships-border: rgba(189, 91, 120, 0.25);
+
+  /* Quiet Neutral: General category */
+  --cat-neutral: #8B93A6;
+  --cat-neutral-bg: #F1F2F4;
+  --cat-neutral-text: #454D5E;
+  --cat-neutral-border: rgba(139, 147, 166, 0.25);
+
+  /* Growth Green: Positive states across the app (streaks, upward trends, approvals) */
+  --growth-green: #4C9A6B;
+  --growth-green-bg: #EAF5EE;
+  --growth-green-text: #26653F;
+  --growth-green-border: rgba(76, 154, 107, 0.25);
+
+  /* Semantic mappings for sentiment */
+  --positive: var(--growth-green);
+  --positive-bg: var(--growth-green-bg);
+  --positive-text: var(--growth-green-text);
+  --negative: var(--cat-trauma);
+  --negative-bg: var(--cat-trauma-bg);
+  --negative-text: var(--cat-trauma-text);
+  --neutral: var(--cat-neutral);
+  --neutral-bg: var(--cat-neutral-bg);
+  --neutral-text: var(--cat-neutral-text);
+
+  /* Crisis Amber: Reserved EXCLUSIVELY for crisis risk detection. Nowhere else. */
+  --crisis-amber: #C99A2E;
+  --crisis-amber-bg: #FBF3DF;
+  --crisis-amber-border: #D8B04E;
+  --crisis-amber-text: #785200;
+
+  /* Surfaces & Base Neutrals */
+  --bg: #FDF0F3; /* Blush background on marketing + patient-facing pages */
+  --bg-working: #FAF9F8; /* Working Neutral for Provider and Admin dashboards */
+  --surface: #FFFFFF;
+  --surface-subtle: #FDF4F6;
+  --border: rgba(51, 39, 85, 0.12);
+  --border-focus: rgba(232, 54, 143, 0.45);
+  --shadow-sm: 0 2px 8px rgba(51, 39, 85, 0.04);
+  --shadow: 0 4px 20px rgba(51, 39, 85, 0.06);
+  --shadow-md: 0 8px 30px rgba(51, 39, 85, 0.08);
+
+  /* Standard Application Errors */
+  --error: #C6392F;
+  --error-bg: #FDF1F0;
+  --error-text: #96221A;
+  --error-border: #F6C1BC;
+
+  /* Typography System */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-heading: 'Baloo 2', 'Fraunces', cursive, sans-serif;
+  --font-body: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-script: 'Caveat', cursive;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Deliberate Motion Token */
+  --ease-gentle: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-gentle: 0.4s;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  border: none;
+}
+
+/* Working dashboards (Provider & Admin) use working neutral */
+
+
+/* Typography Hierarchy */
+h1 {
+  font-family: var(--font-display);
   font-weight: 500;
   color: var(--text-h);
+  font-size: 38px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 24px 0 12px;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+@media (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+    margin: 18px 0 8px;
   }
 }
+
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
+  font-family: var(--font-body);
+  font-weight: 700;
   color: var(--text-h);
+  font-size: 22px;
+  line-height: 1.3;
+  margin: 0 0 10px;
 }
 
-code {
+h3 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--text-h);
+  font-size: 17px;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+h4 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--text-h);
   font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  margin: 0 0 4px;
+}
+
+p {
+  margin: 0 0 8px;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Big emotional numbers with Fraunces */
+.stat-emotional-num,
+.stat-headline-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Crisis Headline in Fraunces */
+.crisis-headline-serif {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

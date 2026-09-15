@@ -2,14 +2,26 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const SPECIALIZATIONS = [
+  "Anxiety & Stress",
+  "Relationships",
+  "Depression",
+  "Trauma Recovery",
+  "General",
+];
+
 function Register() {
   const navigate = useNavigate();
   const { register } = useAuth();
 
+  const [role, setRole] = useState("patient"); // "patient" or "provider"
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    title: "",
+    specialization: "Anxiety & Stress",
+    license_or_credential_info: "",
   });
 
   const [error, setError] = useState("");
@@ -28,11 +40,25 @@ function Register() {
     setSubmitting(true);
 
     try {
-      await register(formData.username, formData.email, formData.password);
-      // Redirect to login page on success with a friendly message
+      const extraData =
+        role === "provider"
+          ? {
+              title: formData.title,
+              specialization: formData.specialization,
+              license_or_credential_info: formData.license_or_credential_info,
+            }
+          : {};
+
+      await register(formData.username, formData.email, formData.password, role, extraData);
+
+      const successMessage =
+        role === "provider"
+          ? "Application submitted! Your credentials will be reviewed by our admin team before full activation. Please sign in to monitor your application status."
+          : "Registration successful! Please sign in with your new account.";
+
       navigate("/login", {
         state: {
-          message: "Registration successful! Please sign in with your new account.",
+          message: successMessage,
         },
       });
     } catch (err) {
@@ -44,7 +70,6 @@ function Register() {
         } else if (data.detail) {
           setError(data.detail);
         } else {
-          // Format serializer field validation errors
           const errorMessages = Object.entries(data).map(([field, messages]) => {
             const fieldLabel = field.charAt(0).toUpperCase() + field.slice(1);
             const msgText = Array.isArray(messages) ? messages.join(" ") : messages;
@@ -64,9 +89,29 @@ function Register() {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-card" style={{ maxWidth: role === "provider" ? "560px" : "440px" }}>
         <h1 className="auth-title">Create Account</h1>
-        <p className="auth-subtitle">Join MindMirror AI to reflect and gain insights</p>
+        <p className="auth-subtitle">Join MindMirror AI to reflect and connect</p>
+
+        {/* Role Toggle */}
+        <div className="role-selector-container" style={{ margin: "1.2rem 0", display: "flex", gap: "0.5rem" }}>
+          <button
+            type="button"
+            className={`btn ${role === "patient" ? "btn-primary" : "btn-outline"}`}
+            style={{ flex: 1, padding: "0.6rem 0.8rem", fontSize: "0.9rem" }}
+            onClick={() => setRole("patient")}
+          >
+            🌱 Looking for Support
+          </button>
+          <button
+            type="button"
+            className={`btn ${role === "provider" ? "btn-primary" : "btn-outline"}`}
+            style={{ flex: 1, padding: "0.6rem 0.8rem", fontSize: "0.9rem" }}
+            onClick={() => setRole("provider")}
+          >
+            🩺 Mental Health Professional
+          </button>
+        </div>
 
         {error && <div className="alert alert-error">{error}</div>}
 
@@ -112,12 +157,70 @@ function Register() {
             />
           </div>
 
+          {/* Provider specific fields */}
+          {role === "provider" && (
+            <div className="provider-application-fields" style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem", marginTop: "1rem" }}>
+              <div className="alert alert-info" style={{ fontSize: "0.85rem", marginBottom: "1rem", padding: "0.75rem", background: "var(--cat-anxiety-bg)", borderRadius: "8px" }}>
+                ℹ️ <strong>Provider Application:</strong> Your profile will be reviewed by an administrator before appearing in the client directory.
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="title">Professional Title</label>
+                <input
+                  id="title"
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="e.g. Licensed Clinical Psychologist, MD Psychiatrist, LMFT"
+                  required={role === "provider"}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="specialization">Primary Specialization</label>
+                <select
+                  id="specialization"
+                  name="specialization"
+                  value={formData.specialization}
+                  onChange={handleChange}
+                  required={role === "provider"}
+                  style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border)" }}
+                >
+                  {SPECIALIZATIONS.map((spec) => (
+                    <option key={spec} value={spec}>
+                      {spec}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="license_or_credential_info">License & Credential Information</label>
+                <textarea
+                  id="license_or_credential_info"
+                  name="license_or_credential_info"
+                  value={formData.license_or_credential_info}
+                  onChange={handleChange}
+                  placeholder="Provide your state/national license numbers, clinical certifications, issuing board, and years in practice..."
+                  rows={3}
+                  required={role === "provider"}
+                  style={{ width: "100%", padding: "0.6rem", borderRadius: "6px", border: "1px solid var(--border)" }}
+                />
+              </div>
+            </div>
+          )}
+
           <button
             type="submit"
             className="btn btn-primary btn-block"
             disabled={submitting}
           >
-            {submitting ? "Creating Account..." : "Register"}
+            {submitting
+              ? "Submitting..."
+              : role === "provider"
+              ? "Submit Application"
+              : "Register"}
           </button>
         </form>
 

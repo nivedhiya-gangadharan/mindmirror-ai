@@ -8,20 +8,26 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await api.get("/accounts/me/");
+      setUser(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch current user:", error);
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      setUser(null);
+      return null;
+    }
+  };
+
   // Initialize auth state by verifying stored access token
   useEffect(() => {
     const initAuth = async () => {
       const token = localStorage.getItem("access");
       if (token) {
-        try {
-          const response = await api.get("/accounts/me/");
-          setUser(response.data);
-        } catch (error) {
-          console.error("Failed to fetch current user on init:", error);
-          localStorage.removeItem("access");
-          localStorage.removeItem("refresh");
-          setUser(null);
-        }
+        await fetchCurrentUser();
       }
       setLoading(false);
     };
@@ -39,19 +45,19 @@ export function AuthProvider({ children }) {
     localStorage.setItem("access", access);
     localStorage.setItem("refresh", refresh);
 
-    // Fetch current user details
-    const userResponse = await api.get("/accounts/me/");
-    setUser(userResponse.data);
-
-    return userResponse.data;
+    // Fetch current user details with profile
+    return await fetchCurrentUser();
   };
 
-  const register = async (username, email, password) => {
-    const response = await api.post("/accounts/register/", {
+  const register = async (username, email, password, role = "patient", extraData = {}) => {
+    const payload = {
       username,
       email,
       password,
-    });
+      role,
+      ...extraData,
+    };
+    const response = await api.post("/accounts/register/", payload);
     return response.data;
   };
 
@@ -61,13 +67,23 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const isAdmin = !!user?.is_staff;
+  const isProvider = user?.profile?.role === "provider";
+  const isPatient = user ? user?.profile?.role === "patient" && !isAdmin : false;
+
   const value = {
     user,
+    profile: user?.profile || null,
+    role: user?.profile?.role || "patient",
+    isAdmin,
+    isProvider,
+    isPatient,
     loading,
     isAuthenticated: !!user,
     login,
     logout,
     register,
+    refreshUser: fetchCurrentUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
