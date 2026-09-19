@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import api from "../services/api";
 import { formatTime, formatSlotLabel } from "../utils/formatTime";
+import { getMediaUrl } from "../utils/avatar";
 
 const SPECIALIZATION_FILTERS = [
   { id: "all", label: "All Specialists" },
@@ -376,18 +377,33 @@ function Book() {
                         marginBottom: "8px",
                       }}
                     >
-                      <div
-                        className="specialist-avatar"
-                        style={{
-                          backgroundColor: avatarColor,
-                          width: "42px",
-                          height: "42px",
-                          fontSize: "15px",
-                          marginBottom: 0,
-                        }}
-                      >
-                        {initials}
-                      </div>
+                      {p.profile?.photo ? (
+                        <img
+                          src={getMediaUrl(p.profile.photo)}
+                          alt={name}
+                          className="specialist-avatar"
+                          style={{
+                            width: "42px",
+                            height: "42px",
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                            marginBottom: 0,
+                          }}
+                        />
+                      ) : (
+                        <div
+                          className="specialist-avatar"
+                          style={{
+                            backgroundColor: avatarColor,
+                            width: "42px",
+                            height: "42px",
+                            fontSize: "15px",
+                            marginBottom: 0,
+                          }}
+                        >
+                          {initials}
+                        </div>
+                      )}
                       <div className="specialist-meta">
                         <h4 className="specialist-name">{name}</h4>
                         <div

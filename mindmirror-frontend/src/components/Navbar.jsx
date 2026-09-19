@@ -1,5 +1,6 @@
-﻿import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getMediaUrl, getInitials, getAvatarColor } from "../utils/avatar";
 
 function Navbar() {
   const { user, isProvider, isAdmin, isAuthenticated, logout } = useAuth();
@@ -117,11 +118,30 @@ function Navbar() {
             )}
 
             <div className="navbar-user">
-              <span className="user-greeting">
-                Hello, <strong>{user?.username}</strong>
-                {isAdmin && <span className="nav-role-badge badge-admin">Admin</span>}
-                {!isAdmin && isProvider && <span className="nav-role-badge badge-specialist">Specialist</span>}
-              </span>
+              <Link to="/profile" className="nav-profile-link" title="Profile">
+                {user?.profile?.photo ? (
+                  <img
+                    src={getMediaUrl(user.profile.photo)}
+                    alt={user.username}
+                    className="nav-avatar-img"
+                  />
+                ) : (
+                  <span
+                    className="nav-avatar-initials"
+                    style={{ background: getAvatarColor(user?.username) }}
+                  >
+                    {getInitials(user)}
+                  </span>
+                )}
+                <span className="user-greeting">
+                  <strong>
+                    {user?.first_name ? `${user.first_name} ${user.last_name || ""}`.trim() : user?.username}
+                  </strong>
+                  {isAdmin && <span className="nav-role-badge badge-admin">Admin</span>}
+                  {!isAdmin && isProvider && <span className="nav-role-badge badge-specialist">Specialist</span>}
+                </span>
+              </Link>
+
               <button
                 onClick={handleLogout}
                 className="btn-logout"

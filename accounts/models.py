@@ -56,6 +56,15 @@ class Profile(models.Model):
         blank=True,
         help_text="Reason if application is rejected"
     )
+    photo = models.ImageField(
+        upload_to="profile_photos/",
+        blank=True,
+        null=True
+    )
+    place = models.CharField(
+        max_length=120,
+        blank=True
+    )
     created_at = models.DateTimeField(
         auto_now_add=True
     )

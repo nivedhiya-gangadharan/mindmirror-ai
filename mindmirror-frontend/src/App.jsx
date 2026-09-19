@@ -1,4 +1,4 @@
-﻿import {
+import {
   BrowserRouter,
   Routes,
   Route,
@@ -20,6 +20,7 @@ import Book from "./pages/Book";
 import ProviderDashboard from "./pages/ProviderDashboard";
 import Resources from "./pages/Resources";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
 import "./App.css";
 
 // Public Route Guard (redirects already authenticated users away from login/register)
@@ -156,6 +157,20 @@ function AppLayout() {
                 <AdminDashboard />
               </AdminRoute>
             }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/settings"
+            element={<Navigate to="/profile" replace />}
           />
 
           <Route path="*" element={<Navigate to="/" replace />} />

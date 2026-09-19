@@ -1,13 +1,17 @@
 from rest_framework import generics, status
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
+from .models import Profile
 from .serializers import (
     RegisterSerializer,
     UserProfileSerializer,
     ProviderPublicSerializer,
     ProviderVerifyActionSerializer,
+    PhotoUploadSerializer,
+    ChangePasswordSerializer,
 )
 
 
@@ -16,12 +20,69 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 
-class CurrentUserView(generics.RetrieveAPIView):
+class CurrentUserView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.request.user
+
+
+class ProfilePhotoView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+    serializer_class = PhotoUploadSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+
+        if profile.photo:
+            try:
+                profile.photo.delete(save=False)
+            except Exception:
+                pass
+
+        profile.photo = serializer.validated_data["photo"]
+        profile.save()
+
+        photo_url = request.build_absolute_uri(profile.photo.url)
+        return Response({
+            "detail": "Profile photo updated successfully.",
+            "photo": photo_url,
+            "user": UserProfileSerializer(request.user, context={"request": request}).data,
+        }, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        if profile.photo:
+            try:
+                profile.photo.delete(save=True)
+            except Exception:
+                profile.photo = None
+                profile.save()
+
+        return Response({
+            "detail": "Profile photo removed successfully.",
+            "photo": None,
+            "user": UserProfileSerializer(request.user, context={"request": request}).data,
+        }, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        new_password = serializer.validated_data["new_password"]
+        request.user.set_password(new_password)
+        request.user.save()
+        return Response({
+            "detail": "Password changed successfully."
+        }, status=status.HTTP_200_OK)
 
 
 class ProviderListView(generics.ListAPIView):

@@ -1,6 +1,7 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
+import { getMediaUrl } from "../utils/avatar";
 
 function getCategoryClass(category) {
   switch (category) {
@@ -220,12 +221,26 @@ export default function ProviderSuggestions({ refreshTrigger = 0 }) {
                   return (
                     <div key={p.id} className="suggestion-provider-card">
                       <div className="specialist-card-top">
-                        <div
-                          className="specialist-avatar"
-                          style={{ backgroundColor: avatarColor }}
-                        >
-                          {initials}
-                        </div>
+                        {p.profile?.photo ? (
+                          <img
+                            src={getMediaUrl(p.profile.photo)}
+                            alt={name}
+                            className="specialist-avatar"
+                            style={{
+                              width: "48px",
+                              height: "48px",
+                              objectFit: "cover",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        ) : (
+                          <div
+                            className="specialist-avatar"
+                            style={{ backgroundColor: avatarColor }}
+                          >
+                            {initials}
+                          </div>
+                        )}
                         <div className="specialist-meta">
                           <h4 className="specialist-name">{name}</h4>
                           <span className={`specialist-spec-badge ${specClass}`}>{spec}</span>

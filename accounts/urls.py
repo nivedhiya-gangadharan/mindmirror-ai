@@ -7,6 +7,8 @@ from .views import (
     VerifyProviderView,
     AllProvidersAdminListView,
     AdminStatsView,
+    ProfilePhotoView,
+    ChangePasswordView,
 )
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -18,6 +20,8 @@ urlpatterns = [
     path("login/", TokenObtainPairView.as_view(), name="login"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("me/", CurrentUserView.as_view(), name="current_user"),
+    path("me/photo/", ProfilePhotoView.as_view(), name="profile_photo"),
+    path("change-password/", ChangePasswordView.as_view(), name="change_password"),
     path("providers/", ProviderListView.as_view(), name="provider_list"),
     path("providers/pending/", PendingProviderListView.as_view(), name="pending_providers"),
     path("providers/<int:pk>/verify/", VerifyProviderView.as_view(), name="verify_provider"),
