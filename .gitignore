@@ -32,3 +32,6 @@ Thumbs.db
 
 # Logs
 *.log
+# Media and scratch
+media/
+scratch/

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^*tb=4w@88%y95oj%&ut-$xk_&-a*#$2$x^1^oo(axtpinvi+%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver", "*"]
 
 
 # Application definition
@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     "accounts",
     "journals",
     "analysis",
+    "appointments",
+    "doctors",
+    "resources",
 ]
 
 MIDDLEWARE = [
@@ -126,6 +129,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Media files (User uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Email
