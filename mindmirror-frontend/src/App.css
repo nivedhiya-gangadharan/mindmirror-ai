@@ -1896,3 +1896,160 @@
   justify-content: flex-end;
   margin-top: 8px;
 }
+
+/* ============================================================
+   Profile view/edit split (Phase 14)
+   ============================================================ */
+
+/* Read-only view layout */
+.profile-view-body {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 0;
+}
+
+/* The clickable photo button */
+.profile-photo-trigger {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: block;
+}
+
+.profile-photo-trigger .settings-avatar-img,
+.profile-photo-trigger .settings-avatar-initials {
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.profile-photo-trigger:hover .settings-avatar-img,
+.profile-photo-trigger:hover .settings-avatar-initials {
+  filter: brightness(0.72);
+  transform: scale(1.02);
+}
+
+/* Edit overlay label */
+.photo-edit-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+.profile-photo-trigger:hover .photo-edit-overlay {
+  opacity: 1;
+}
+
+.profile-photo-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Text info block in view mode */
+.profile-view-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-view-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary, #1a1a2e);
+  line-height: 1.2;
+}
+
+.profile-view-username {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.profile-view-place {
+  font-size: 13px;
+  color: var(--text-secondary, #555);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+@media (max-width: 480px) {
+  .profile-view-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+/* ============================================================
+   Journal entry edit / delete actions (Phase 15)
+   ============================================================ */
+
+.entry-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-entry-action {
+  background: none;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-secondary, #64748b);
+  transition: background 0.14s, color 0.14s, border-color 0.14s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+}
+
+.btn-entry-action:hover {
+  background: var(--surface-hover, rgba(99,102,241,0.07));
+  color: var(--accent-text, var(--accent));
+  border-color: var(--accent);
+}
+
+.btn-entry-action.btn-entry-delete:hover {
+  background: rgba(239,68,68,0.07);
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+/* "Editing" state on the entry card */
+.entry-item.editing {
+  border-left-color: var(--accent) !important;
+  background: var(--surface-hover, rgba(99,102,241,0.04));
+}
+
+.entry-editing-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--accent-text, var(--accent));
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+/* Journal form in "edit" mode */
+.journal-form-editing .btn-primary {
+  background: var(--accent);
+}

@@ -1,4 +1,4 @@
-﻿from django.db import models
+from django.db import models
 from django.contrib.auth.models import User
 from journals.models import JournalEntry
 
@@ -29,7 +29,7 @@ class Alert(models.Model):
     )
     journal_entry = models.ForeignKey(
         JournalEntry,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name="risk_alerts",
         null=True,
         blank=True

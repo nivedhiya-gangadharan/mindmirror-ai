@@ -274,7 +274,7 @@ function ProviderDashboard() {
           </div>
           <div className="stat-pill">
             <span className="stat-label">Pending Outreach</span>
-            <span className="stat-value">{alerts.filter((a) => a.status === "new").length}</span>
+            <span className="stat-value">{alerts.filter((a) => a.status === "active").length}</span>
           </div>
         </div>
       </header>
